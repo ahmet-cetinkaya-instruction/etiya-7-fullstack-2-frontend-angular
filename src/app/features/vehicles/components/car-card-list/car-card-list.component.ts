@@ -4,7 +4,7 @@ import {
   Component,
   OnInit,
 } from '@angular/core';
-import { CarsService } from '../../services/cars.service';
+import { CarsMockService } from '../../services/cars-mock.service';
 import { CarListItemDto } from '../../models/car-list-item-dto';
 
 @Component({
@@ -17,7 +17,7 @@ export class CarCardListComponent implements OnInit {
   cars!: CarListItemDto[];
 
   constructor(
-    private carsService: CarsService,
+    private carsService: CarsMockService,
     private changeDetector: ChangeDetectorRef
   ) {}
 
@@ -26,9 +26,9 @@ export class CarCardListComponent implements OnInit {
   }
 
   getList(): void {
-    this.carsService.getList().subscribe({
-      next: (cars) => {
-        this.cars = cars;
+    this.carsService.getList({pageIndex: 0, pageSize: 9}).subscribe({
+      next: (response) => {
+        this.cars = response.items;
 
         this.changeDetector.detectChanges(); // State'ler üzerindeki değişiklikleri Angular'ın algılaması için uyarmış oluyoruz.
       },
