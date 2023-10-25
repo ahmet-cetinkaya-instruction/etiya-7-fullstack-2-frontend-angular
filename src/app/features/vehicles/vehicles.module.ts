@@ -3,16 +3,22 @@ import { CommonModule } from '@angular/common';
 import { CarCardListComponent } from './components/car-card-list/car-card-list.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CarsMockService } from './services/cars-mock.service';
+import { BrandListGroupComponent } from './components/brand-list-group/brand-list-group.component';
+import { BrandsMockService } from './services/brands-mock.service';
 
 @NgModule({
-  declarations: [CarCardListComponent],
-  exports: [CarCardListComponent],
+  declarations: [CarCardListComponent, BrandListGroupComponent],
+  exports: [CarCardListComponent, BrandListGroupComponent],
   imports: [CommonModule, HttpClientModule],
   providers: [
     {
       provide: CarsMockService,
-      useClass: CarsMockService
-    }
+      useClass: CarsMockService,
+    },
+    {
+      provide: BrandsMockService,
+      useClass: BrandsMockService,
+    },
   ],
 })
 export class VehiclesModule {}

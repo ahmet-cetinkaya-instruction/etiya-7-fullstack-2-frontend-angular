@@ -1,0 +1,28 @@
+<ul class="list-group">
+  <li
+    (click)="onBrandClick(null)"
+    class="list-group-item"
+    [ngClass]="{ active: selectedBrandId === null }"
+    [ariaCurrent]="selectedBrandId === null"
+  >
+    All
+  </li>
+  <li
+    *ngFor="let brand of brandsList.items"
+    (click)="onBrandClick(brand.id)"
+    class="list-group-item"
+    [ngClass]="{ active: selectedBrandId === brand.id }"
+    [ariaCurrent]="selectedBrandId === null"
+  >
+    {{ brand.name }}
+  </li>
+</ul>
+<!-- Lazy loading -->
+<button
+  (click)="onViewMoreButtonClicked()"
+  class="btn border-0"
+  [ngClass]="{ disabled: !brandsList.hasNextPage }"
+  [disabled]="!brandsList.hasNextPage"
+>
+  View more
+</button>
