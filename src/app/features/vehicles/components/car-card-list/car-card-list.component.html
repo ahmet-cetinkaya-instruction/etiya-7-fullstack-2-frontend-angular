@@ -1,5 +1,6 @@
-<div class="row">
-  <div *ngFor="let car of cars" class="col-md-3 p-1">
+<!-- List -->
+<div *ngIf="carsList" class="row">
+  <div *ngFor="let car of carsList.items" class="col-md-3 p-1">
     <div class="card">
       <img
         [src]="car.imageUrl"
@@ -18,3 +19,43 @@
     </div>
   </div>
 </div>
+<!-- Pagination -->
+<nav *ngIf="carsList">
+  <ul class="pagination">
+    <li class="page-item">
+      <button
+        (click)="onPreviousPageButtonClicked()"
+        class="page-link"
+        [ngClass]="{
+          disabled: !carsList.hasPreviousPage
+        }"
+        [disabled]="!carsList.hasPreviousPage"
+      >
+        Previous
+      </button>
+    </li>
+    <li *ngFor="let pageNumber of pageNumbers" class="page-item">
+      <button
+        (click)="onPageButtonClicked(pageNumber - 1)"
+        class="page-link"
+        [ngClass]="{
+          active: pageNumber - 1 === carsList.pageIndex
+        }"
+      >
+        {{ pageNumber }}
+      </button>
+    </li>
+    <li class="page-item">
+      <button
+        (click)="onNextPageButtonClicked()"
+        class="page-link"
+        [ngClass]="{
+          disabled: !carsList.hasNextPage
+        }"
+        [disabled]="!carsList.hasNextPage"
+      >
+        Next
+      </button>
+    </li>
+  </ul>
+</nav>

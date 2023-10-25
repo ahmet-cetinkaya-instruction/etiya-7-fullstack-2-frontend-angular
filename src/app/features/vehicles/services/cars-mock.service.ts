@@ -22,17 +22,24 @@ export class CarsMockService {
   getList(request: GetCarsListRequest): Observable<GetCarsListResponse> {
     const subject = new Subject<GetCarsListResponse>();
 
+    const params = {
+      _page: request.pageIndex + 1,
+      _limit: request.pageSize,
+    };
+
     this.httpClient
-      .get<CarListItemDto[]>(this.apiControllerUrl) // Observable çalışması için bir subcriber'ı olması gerekiyor.
+      .get<CarListItemDto[]>(this.apiControllerUrl, {
+        params, // params: params ile aynı görevi görür, JS içerisindeki kısa yazım şeklidir.
+      }) // Observable çalışması için bir subcriber'ı olması gerekiyor.
       .subscribe({
         next: (response) => {
           const responseModel: GetCarsListResponse = {
             pageIndex: request.pageIndex,
             pageSize: request.pageSize,
-            totalCount: 100,
+            totalCount: 16,
             items: response,
             hasNextPage: true,
-            hasPreviousPage: true,
+            hasPreviousPage: request.pageIndex === 0 ? false : true,
           }; // Response'u oluşturmak için sahte bir response modeli oluşturuyoruz.
 
           subject.next(responseModel); // Response'u subject'e gönderiyoruz.
