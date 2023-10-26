@@ -1,3 +1,5 @@
 import { PageRequest } from '../../../core/models/page-request';
 
-export interface GetCarsListRequest extends PageRequest {}
+export interface GetCarsListRequest extends PageRequest {
+  filterByBrandId?: number;
+}

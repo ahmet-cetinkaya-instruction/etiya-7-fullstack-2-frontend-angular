@@ -25,7 +25,8 @@ export class CarsMockService {
     const params = {
       _page: request.pageIndex + 1,
       _limit: request.pageSize,
-    };
+    } as any;
+    if(request.filterByBrandId) params['model.brandId'] = request.filterByBrandId;
 
     this.httpClient
       .get<CarListItemDto[]>(this.apiControllerUrl, {

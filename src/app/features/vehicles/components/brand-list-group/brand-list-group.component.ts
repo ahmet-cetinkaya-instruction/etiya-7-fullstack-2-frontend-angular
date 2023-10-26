@@ -5,7 +5,9 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  EventEmitter,
   OnInit,
+  Output,
 } from '@angular/core';
 import { BrandListItemDto } from '../../models/brand-list-item-dto';
 
@@ -18,6 +20,7 @@ import { BrandListItemDto } from '../../models/brand-list-item-dto';
 export class BrandListGroupComponent implements OnInit {
   brandsList!: PageResponse<BrandListItemDto>;
   selectedBrandId: number | null = null;
+  @Output() selectBrandId = new EventEmitter<number | null>(); // EventEmitter, bir event yaratmamızı sağlayan Obserable bir sınıftır.
 
   constructor(
     private brandsMockService: BrandsMockService,
@@ -46,6 +49,8 @@ export class BrandListGroupComponent implements OnInit {
     // HTML tarafında bir event yaratılmasında, yani kullanıcı olay yarattığında, changeDetector state değişiklikleri algılıyor.
     this.selectedBrandId = brandId;
     // this.changeDetector.detectChanges(); // Bu satırı yazmamıza gerek yok.
+
+    this.selectBrandId.emit(brandId); // Event'i tetikliyoruz.
   }
 
   onViewMoreButtonClicked(): void {

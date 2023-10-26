@@ -2,7 +2,10 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  Input,
+  OnChanges,
   OnInit,
+  SimpleChanges,
 } from '@angular/core';
 import { CarsMockService } from '../../services/cars-mock.service';
 import { CarListItemDto } from '../../models/car-list-item-dto';
@@ -15,8 +18,10 @@ import { PageResponse } from 'src/app/core/models/page-response';
   styleUrls: ['./car-card-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CarCardListComponent implements OnInit {
+export class CarCardListComponent implements OnInit, OnChanges {
   carsList!: PageResponse<CarListItemDto>;
+  @Input() selectedBrandId: number | null = null;
+
   get pageNumbers(): number[] {
     const pageCount = Math.ceil(
       this.carsList.totalCount / this.carsList.pageSize
@@ -31,6 +36,18 @@ export class CarCardListComponent implements OnInit {
 
   ngOnInit(): void {
     this.getList({ pageIndex: 0, pageSize: 8 });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (
+      changes['selectedBrandId']?.previousValue !==
+      changes['selectedBrandId']?.currentValue
+    )
+      this.getList({
+        pageIndex: 0,
+        pageSize: 8,
+        filterByBrandId: this.selectedBrandId ?? undefined,
+      });
   }
 
   getList(request: GetCarsListRequest): void {
@@ -62,7 +79,7 @@ export class CarCardListComponent implements OnInit {
   }
 
   onPageButtonClicked(pageIndex: number): void {
-    if(pageIndex === this.carsList.pageIndex) return;
+    if (pageIndex === this.carsList.pageIndex) return;
 
     this.getList({
       pageIndex: pageIndex,

@@ -7,18 +7,26 @@
   >
     All
   </li>
-  <li
-    *ngFor="let brand of brandsList.items"
-    (click)="onBrandClick(brand.id)"
-    class="list-group-item"
-    [ngClass]="{ active: selectedBrandId === brand.id }"
-    [ariaCurrent]="selectedBrandId === null"
-  >
-    {{ brand.name }}
-  </li>
+  <ng-template [ngIf]="brandsList">
+    <!--
+      ng-template'ler sanal template'lerdir. İhtiyaç anında kullanılması için referans olarak kullanılabilir.
+     -->
+    <li
+      *ngFor="let brand of brandsList.items"
+      (click)="onBrandClick(brand.id)"
+      class="list-group-item"
+      [ngClass]="{ active: selectedBrandId === brand.id }"
+      [ariaCurrent]="selectedBrandId === null"
+    >
+      {{ brand.name }}
+    </li>
+  </ng-template>
+  <!-- * ile başlayan directive'ler yapısal directive'lerdir, örn. *ngFor gibi. Dolayısıyla bir element sadece bir yapısal directive kullanılabilir. -->
+  <!-- Structural Directive'ler ise ilgili elementin render işlemine müdahale eden veya yöneten directive'lerdir. -->
 </ul>
 <!-- Lazy loading -->
 <button
+  *ngIf="brandsList"
   (click)="onViewMoreButtonClicked()"
   class="btn border-0"
   [ngClass]="{ disabled: !brandsList.hasNextPage }"
