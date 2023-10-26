@@ -5,11 +5,11 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  EventEmitter,
-  OnInit,
-  Output,
+  EventEmitter, Input, OnInit,
+  Output
 } from '@angular/core';
 import { BrandListItemDto } from '../../models/brand-list-item-dto';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-brand-list-group',
@@ -19,12 +19,14 @@ import { BrandListItemDto } from '../../models/brand-list-item-dto';
 })
 export class BrandListGroupComponent implements OnInit {
   brandsList!: PageResponse<BrandListItemDto>;
-  selectedBrandId: number | null = null;
+  @Input() selectedBrandId: number | null = null;
   @Output() selectBrandId = new EventEmitter<number | null>(); // EventEmitter, bir event yaratmamızı sağlayan Obserable bir sınıftır.
 
   constructor(
     private brandsMockService: BrandsMockService,
-    private changeDetector: ChangeDetectorRef
+    private changeDetector: ChangeDetectorRef,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {

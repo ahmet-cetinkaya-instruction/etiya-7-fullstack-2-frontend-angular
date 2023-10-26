@@ -34,10 +34,6 @@ export class CarCardListComponent implements OnInit, OnChanges {
     private changeDetector: ChangeDetectorRef
   ) {}
 
-  ngOnInit(): void {
-    this.getList({ pageIndex: 0, pageSize: 8 });
-  }
-
   ngOnChanges(changes: SimpleChanges): void {
     if (
       changes['selectedBrandId']?.previousValue !==
@@ -48,6 +44,10 @@ export class CarCardListComponent implements OnInit, OnChanges {
         pageSize: 8,
         filterByBrandId: this.selectedBrandId ?? undefined,
       });
+  }
+
+  ngOnInit(): void {
+    if (!this.selectedBrandId) this.getList({ pageIndex: 0, pageSize: 8 });
   }
 
   getList(request: GetCarsListRequest): void {

@@ -2,7 +2,10 @@
   <div class="row">
     <aside class="col-md-2">
       <h1 class="display-6">Brands</h1>
-      <app-brand-list-group (selectBrandId)="onSelectedBrand($event)">
+      <app-brand-list-group
+        [selectedBrandId]="selectedBrandId"
+        (selectBrandId)="onSelectedBrand($event)"
+      >
       </app-brand-list-group>
 
       <h1 class="display-6">Models</h1>
