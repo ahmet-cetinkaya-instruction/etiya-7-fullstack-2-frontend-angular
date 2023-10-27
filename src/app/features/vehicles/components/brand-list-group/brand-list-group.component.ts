@@ -5,11 +5,13 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  EventEmitter, Input, OnInit,
-  Output
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
 } from '@angular/core';
 import { BrandListItemDto } from '../../models/brand-list-item-dto';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Subject, debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-brand-list-group',
@@ -18,19 +20,19 @@ import { ActivatedRoute, Router } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BrandListGroupComponent implements OnInit {
-  brandsList!: PageResponse<BrandListItemDto>;
+  brandsList!: PageResponse<BrandListItemDto> | null;
   @Input() selectedBrandId: number | null = null;
   @Output() selectBrandId = new EventEmitter<number | null>(); // EventEmitter, bir event yaratmamızı sağlayan Obserable bir sınıftır.
+  searchText: string = '';
 
   constructor(
     private brandsMockService: BrandsMockService,
-    private changeDetector: ChangeDetectorRef,
-    private router: Router,
-    private activatedRoute: ActivatedRoute
+    private changeDetector: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.getList({ pageIndex: 0, pageSize: 3 });
+    this.subscribeSearchSubject();
   }
 
   getList(request: GetBrandListRequest): void {
@@ -56,11 +58,32 @@ export class BrandListGroupComponent implements OnInit {
   }
 
   onViewMoreButtonClicked(): void {
-    if (!this.brandsList.hasNextPage) return;
+    if (!this.brandsList?.hasNextPage) return;
 
     this.getList({
       pageIndex: this.brandsList.pageIndex + 1,
       pageSize: this.brandsList.pageSize,
+      searchByName: this.searchText!,
     });
+  }
+
+  searchSubject = new Subject<void>();
+  onBrandSearch(event: KeyboardEvent) {
+    // this.searchText = (event.target as HTMLInputElement).value; // [(ngModel)] ile aynı işi yapmış oluyoruz, aynı zamanda TS tarafından HTML tarafına atama işlemini bizim için sağlamış oluyor.
+
+    this.searchSubject.next();
+  }
+  subscribeSearchSubject() {
+    this.searchSubject
+      .pipe(debounceTime(700)) // debounceTime, bir event tetiklendiğinde, belirtilen süre kadar bekleyip, event'i tetikliyor.
+      .subscribe(() => {
+        const pageSize = this.brandsList!.pageSize;
+        this.brandsList = null;
+        this.getList({
+          pageIndex: 0,
+          pageSize: pageSize,
+          searchByName: this.searchText!,
+        });
+      });
   }
 }

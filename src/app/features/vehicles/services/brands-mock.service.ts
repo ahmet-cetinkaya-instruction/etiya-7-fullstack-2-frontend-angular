@@ -15,10 +15,11 @@ export class BrandsMockService {
   getList(request: GetBrandListRequest): Observable<GetBrandListResponse> {
     const subject = new Subject<GetBrandListResponse>();
 
-    const params = {
+    const params: any = {
       _page: request.pageIndex + 1,
       _limit: request.pageSize,
     };
+    if(request.searchByName) params['name_like'] = request.searchByName;
 
     this.httpClient
       .get<BrandListItemDto[]>(this.apiControllerUrl, {
