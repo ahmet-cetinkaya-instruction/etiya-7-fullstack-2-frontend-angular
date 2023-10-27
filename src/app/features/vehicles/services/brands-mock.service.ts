@@ -11,12 +11,20 @@ import { UpdateBrandRequest } from '../models/update-brand-request';
 import { UpdateBrandResponse } from '../models/update-brand-response';
 import { DeleteBrandRequest } from '../models/delete-brand-request';
 import { DeleteBrandResponse } from '../models/delete-brand-response';
+import { GetBrandByIdRequest } from '../models/get-brand-by-id-request';
+import { GetBrandByIdResponse } from '../models/get-brand-by-id-response';
 
 @Injectable()
 export class BrandsMockService {
   private readonly apiControllerUrl = `${environment.API_URL}/brands`;
 
   constructor(private httpClient: HttpClient) {}
+
+  getById(request: GetBrandByIdRequest): Observable<GetBrandByIdResponse> {
+    return this.httpClient.get<GetBrandByIdResponse>(
+      `${this.apiControllerUrl}/${request.id}`
+    );
+  }
 
   getList(request: GetBrandListRequest): Observable<GetBrandListResponse> {
     const subject = new Subject<GetBrandListResponse>();

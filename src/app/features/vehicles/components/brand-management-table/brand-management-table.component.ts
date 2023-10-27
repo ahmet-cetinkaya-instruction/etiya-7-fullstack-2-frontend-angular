@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { BrandsMockService } from '../../services/brands-mock.service';
 import { GetBrandListRequest } from '../../models/get-brand-list-request';
 import { PageResponse } from 'src/app/core/models/page-response';
@@ -13,7 +13,7 @@ import { BrandListItemDto } from '../../models/brand-list-item-dto';
 export class BrandManagementTableComponent implements OnInit {
   brandsList!: PageResponse<BrandListItemDto>;
 
-  constructor(private brandsService: BrandsMockService) {}
+  constructor(private brandsService: BrandsMockService, private changeDetector:ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.getList({ pageIndex: 0, pageSize: 10 });
@@ -23,6 +23,8 @@ export class BrandManagementTableComponent implements OnInit {
     this.brandsService.getList(request).subscribe({
       next: (response) => {
         this.brandsList = response;
+
+        this.changeDetector.detectChanges();
       },
     });
   }
