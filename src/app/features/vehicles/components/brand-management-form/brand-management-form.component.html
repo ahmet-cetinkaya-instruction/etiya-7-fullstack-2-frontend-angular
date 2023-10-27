@@ -1,4 +1,4 @@
-<form [formGroup]="brandForm" (submit)="onSubmitForm()">
+<form [formGroup]="brandForm" (submit)="onFormSubmitted()">
   <div class="form-group mb-3">
     <label for="brandName">Brand Name</label>
     <input
@@ -15,5 +15,6 @@
     <textarea formControlName="description" class="form-control" id="brandDescription" rows="3"></textarea>
   </div> -->
 
-  <button type="submit" class="btn btn-primary">Add</button>
+  <button type="submit" class="btn btn-primary me-2">Add</button>
+  <!-- <button type="button" (click)="onDeleteClicked()" class="btn btn-danger">Delete</button> -->
 </form>

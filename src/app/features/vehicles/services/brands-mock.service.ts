@@ -5,6 +5,12 @@ import { GetBrandListRequest } from '../models/get-brand-list-request';
 import { GetBrandListResponse } from '../models/get-brand-list-response';
 import { BrandListItemDto } from '../models/brand-list-item-dto';
 import { HttpClient } from '@angular/common/http';
+import { AddBrandRequest } from '../models/add-brand-request';
+import { AddBrandResponse } from '../models/add-brand-response';
+import { UpdateBrandRequest } from '../models/update-brand-request';
+import { UpdateBrandResponse } from '../models/update-brand-response';
+import { DeleteBrandRequest } from '../models/delete-brand-request';
+import { DeleteBrandResponse } from '../models/delete-brand-response';
 
 @Injectable()
 export class BrandsMockService {
@@ -19,7 +25,7 @@ export class BrandsMockService {
       _page: request.pageIndex + 1,
       _limit: request.pageSize,
     };
-    if(request.searchByName) params['name_like'] = request.searchByName;
+    if (request.searchByName) params['name_like'] = request.searchByName;
 
     this.httpClient
       .get<BrandListItemDto[]>(this.apiControllerUrl, {
@@ -47,5 +53,25 @@ export class BrandsMockService {
       });
 
     return subject.asObservable();
+  }
+
+  add(request: AddBrandRequest): Observable<AddBrandResponse> {
+    return this.httpClient.post<AddBrandResponse>(
+      this.apiControllerUrl,
+      request
+    );
+  }
+
+  update(request: UpdateBrandRequest): Observable<UpdateBrandResponse> {
+    return this.httpClient.put<UpdateBrandResponse>(
+      `${this.apiControllerUrl}/${request.id}`,
+      request
+    );
+  }
+
+  delete(request: DeleteBrandRequest): Observable<DeleteBrandResponse> {
+    return this.httpClient.delete<DeleteBrandResponse>(
+      `${this.apiControllerUrl}/${request.id}`
+    );
   }
 }

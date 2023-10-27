@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { BrandsMockService } from '../../services/brands-mock.service';
+import { AddBrandRequest } from '../../models/add-brand-request';
 
 @Component({
   selector: 'app-brand-management-form',
@@ -16,7 +18,10 @@ export class BrandManagementFormComponent implements OnInit {
   //   ),
   // });
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private brandService: BrandsMockService
+  ) {}
 
   ngOnInit(): void {
     this.createForm();
@@ -29,7 +34,29 @@ export class BrandManagementFormComponent implements OnInit {
     });
   }
 
-  onSubmitForm(): void {
-    console.log(this.brandForm.value);
+  add(): void {
+    const request: AddBrandRequest = {
+      name: this.brandForm.value.name,
+    };
+
+    this.brandService.add(request).subscribe({
+      next: (response) => {
+        console.log(response);
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
   }
+
+  onFormSubmitted(): void {
+    if (this.brandForm.invalid) {
+      console.error('Form is invalid');
+      return;
+    }
+
+    this.add();
+  }
+
+  onDeleteClicked(): void {}
 }
