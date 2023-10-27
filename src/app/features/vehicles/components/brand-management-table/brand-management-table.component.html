@@ -1,0 +1,18 @@
+<a routerLink="./add" class="btn btn-primary">Add New</a>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let brand of brandsList.items">
+      <th scope="row">{{ brand.id }}</th>
+      <td>{{ brand.name }}</td>
+      <td><a routerLink="./edit/{{ brand.id }}" class="btn btn-primary">Edit</a></td>
+    </tr>
+  </tbody>
+</table>
+TODO: Add pagination

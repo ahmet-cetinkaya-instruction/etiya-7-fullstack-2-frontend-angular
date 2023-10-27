@@ -8,12 +8,14 @@ import { SharedModule } from './shared/shared.module';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { VehiclesModule } from './features/vehicles/vehicles.module';
+import { ManagmentPageComponent } from './pages/management-page/management-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomePageComponent,
-    LoginPageComponent
+    LoginPageComponent,
+    ManagmentPageComponent
   ],
   imports: [
     BrowserModule,

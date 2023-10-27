@@ -5,12 +5,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { CarsMockService } from './services/cars-mock.service';
 import { BrandListGroupComponent } from './components/brand-list-group/brand-list-group.component';
 import { BrandsMockService } from './services/brands-mock.service';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrandManagementTableComponent } from './components/brand-management-table/brand-management-table.component';
+import { RouterModule } from '@angular/router';
+import { BrandManagementFormComponent } from './components/brand-management-form/brand-management-form.component';
 
 @NgModule({
-  declarations: [CarCardListComponent, BrandListGroupComponent],
+  declarations: [CarCardListComponent, BrandListGroupComponent, BrandManagementTableComponent, BrandManagementFormComponent],
   exports: [CarCardListComponent, BrandListGroupComponent],
-  imports: [CommonModule, HttpClientModule, FormsModule],
+  imports: [CommonModule, HttpClientModule, FormsModule, RouterModule, ReactiveFormsModule],
   providers: [
     {
       provide: CarsMockService,
