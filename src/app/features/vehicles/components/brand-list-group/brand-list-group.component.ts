@@ -68,7 +68,7 @@ export class BrandListGroupComponent implements OnInit {
   }
 
   searchSubject = new Subject<void>();
-  onBrandSearch(event: KeyboardEvent) {
+  onBrandSearch() {
     // this.searchText = (event.target as HTMLInputElement).value; // [(ngModel)] ile aynı işi yapmış oluyoruz, aynı zamanda TS tarafından HTML tarafına atama işlemini bizim için sağlamış oluyor.
 
     this.searchSubject.next();
